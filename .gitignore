@@ -1,0 +1,6 @@
+**/*.o
+**/*.elf
+**/*.hdd
+build/xbstrap-dir
+build/build-tools
+.vscode

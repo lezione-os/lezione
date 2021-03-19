@@ -1,0 +1,63 @@
+sources:
+  - name: gcc-10.2.0
+    url: 'https://ftp.gnu.org/gnu/gcc/gcc-10.2.0/gcc-10.2.0.tar.xz'
+    format: 'tar.xz'
+    subdir: build-tools
+    version: '10.2.0'
+    regenerate:
+      - args: ['autoconf']
+        workdir: '@THIS_SOURCE_DIR@/gcc-10.2.0'
+
+  - name: binutils-2.36
+    url: 'https://ftp.gnu.org/gnu/binutils/binutils-2.36.tar.xz'
+    format: 'tar.xz'
+    subdir: build-tools
+    version: '2.36'
+    regenerate:
+      - args: ['autoreconf']
+        workdir: '@THIS_SOURCE_DIR@/binutils-2.36'
+
+tools:
+  - name: kernel-binutils
+    from_source: binutils-2.36
+    configure:
+      - args:
+        - '@THIS_SOURCE_DIR@/binutils-2.36/configure'
+        - '--prefix=@PREFIX@'
+        - '--target=x86_64-elf'
+        - '--disable-nls'
+        - '--disable-werror'
+        - 'CFLAGS=-O2'
+    compile:
+      - args: ['make', '-j@PARALLELISM@']
+    install:
+      - args: ['make', 'install']
+
+  - name: kernel-gcc
+    from_source: gcc-10.2.0
+    tools_required:
+      - tool: kernel-binutils
+        recursive: true
+    configure:
+      - args:
+        - '@THIS_SOURCE_DIR@/gcc-10.2.0/configure'
+        - '--prefix=@PREFIX@'
+        - '--target=x86_64-elf'
+        - '--without-headers'
+        - '--enable-languages=c'
+        - '--disable-nls'
+        - 'CFLAGS=-O2'
+        - 'CXXFLAGS=-O2'
+    stages:
+      - name: 'compiler'
+        compile:
+          - args: ['make',  '-j@PARALLELISM@', 'all-gcc']
+        install:
+          - args: ['make', 'install-gcc']
+          # GCC does *not* look for target-prefixed LD/AS.
+          # Instead, it searches a list of prefix directories. Link AS/LD to make it happy.
+          - args: ['mkdir', '-p', '@PREFIX@/x86_64-elf/bin']
+          - args: ['ln', '-sf', '../../../kernel-binutils/x86_64-elf/bin/as',
+                               '@PREFIX@/x86_64-elf/bin/as']
+          - args: ['ln', '-sf', '../../../kernel-binutils/x86_64-elf/bin/ld',
+                               '@PREFIX@/x86_64-elf/bin/ld']
