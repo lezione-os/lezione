@@ -25,6 +25,7 @@ echfs:
 
 # Rule for xbstrap init
 build/xbstrap-dir/bootstrap.link:
+	mkdir -p build/xbstrap-dir
 	cd build/xbstrap-dir && xbstrap init ..
 
 # Rule for compiling toolchain
@@ -32,7 +33,7 @@ $(CC): build/xbstrap-dir/bootstrap.link
 	cd build/xbstrap-dir && xbstrap install-tool kernel-gcc
 
 # Generic image build rule
-build: echfs toolchain
+build: echfs $(CC)
 # Make release kernel
 	make -C kernel $(MODE)
 # Delete existing release
