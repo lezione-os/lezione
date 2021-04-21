@@ -1,7 +1,7 @@
 //! @file log.c
 //! @brief File containing definitions for formatting functions
 
-#include <lib/fmt.h>	// For vsnprint declaration
+#include <lib/fmt.h>    // For vsnprint declaration
 #include <lib/string.h> // For strlen and memcpy
 #include <misc/types.h> // For fixed width integer types
 
