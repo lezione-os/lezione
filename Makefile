@@ -35,7 +35,7 @@ $(CC): build/xbstrap-dir/bootstrap.link
 # Generic image build rule
 build: echfs $(CC)
 # Make release kernel
-	make -C kernel $(MODE)
+	make -C src/kernel $(MODE)
 # Delete existing release
 	rm -rf $(IMAGE)
 # Make a new image with 64 Megabytes of disk space.
@@ -49,7 +49,7 @@ build: echfs $(CC)
 # Format this partition to echfs filesystem
 	./deps/echfs/echfs-utils -g -p0 $(IMAGE) quick-format 512
 # Copy kernel elf file to the new filesystem
-	./deps/echfs/echfs-utils -g -p0 $(IMAGE) import kernel/$(KERNEL) lezione-kernel.elf
+	./deps/echfs/echfs-utils -g -p0 $(IMAGE) import src/kernel/$(KERNEL) lezione-kernel.elf
 # Copy limine configuration file to the new filesystem
 	./deps/echfs/echfs-utils -g -p0 $(IMAGE) import limine.cfg limine.cfg
 # Copy limine stage 3 to the new filesystem

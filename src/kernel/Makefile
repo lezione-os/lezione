@@ -2,7 +2,7 @@
 
 # C compiler used to compile kernel C code
 # Compiler built by xbstrap is in its build directory
-CC = ../build/xbstrap-dir/tools/kernel-gcc/bin/x86_64-elf-gcc
+CC = ../../build/xbstrap-dir/tools/kernel-gcc/bin/x86_64-elf-gcc
 
 # Assembler used to assemble kernel asm files
 AS = nasm
