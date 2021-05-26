@@ -2,7 +2,7 @@
 
 # C compiler used to compile kernel C code
 # Compiler built by xbstrap is in its build directory
-CC = ../../build/xbstrap-dir/tools/kernel-gcc/bin/x86_64-elf-gcc
+CC = gcc
 
 # Assembler used to assemble kernel asm files
 AS = nasm
@@ -76,7 +76,7 @@ LD_DEBUG_FLAGS =
 LD_RELEASE_FLAGS_ALL := $(LD_RELEASE_FLAGS) $(LDFLAGS) $(LD_HARD_FLAGS)
 
 # All debug LD flags
-LD_RELEASE_FLAGS_ALL := $(LD_DEBUG_FLAGS) $(LDFLAGS) $(LD_HARD_FLAGS)
+LD_DEBUG_FLAGS_ALL := $(LD_DEBUG_FLAGS) $(LDFLAGS) $(LD_HARD_FLAGS)
 
 # Path to linker script
 LD_SCRIPT = link.ld
@@ -84,11 +84,14 @@ LD_SCRIPT = link.ld
 # Assembly flags (same for debug and release)
 ASFLAGS := -f elf64
 
+# Destination directory
+DESTDIR = .
+
 # Release kernel binary output path
-RELEASE_PATH = lezione-kernel-release.elf
+RELEASE_PATH = $(DESTDIR)/lezione-kernel-release.elf
 
 # Debug kernel binary output path
-DEBUG_PATH = lezione-kernel-debug.elf
+DEBUG_PATH = $(DESTDIR)/lezione-kernel-debug.elf
 
 ### Source files and object lists ###
 

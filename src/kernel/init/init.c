@@ -39,8 +39,8 @@ __attribute__((section(".stivale2hdr"), used)) struct stivale2_header stivale_hd
 void kernel_init() {
 	// Greet user
 	log_printf("Hello, OSDev world!\n");
-	log_printf("Printing test %c %d %D %u %U %x %X 0x%p %s!\n", 'a', -123, INT64_MIN, 345, 12234392744ULL, 0x123,
-	           0x123456789, 0x101abe, "strings are supported as well");
+	log_printf("Printing test %c %d %D %u %U %x %X 0x%p %s!\n", 'a', -123, INT64_MIN, 345,
+	           12234392744ULL, 0x123, 0x123456789, 0x101abe, "strings are supported as well");
 	// Nothing more to do yet :^(
 	// Loop forever
 	while (true) {

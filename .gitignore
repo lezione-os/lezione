@@ -1,6 +1,12 @@
 **/*.o
 **/*.elf
 **/*.hdd
-build/xbstrap-dir
 build/build-tools
+build/packages
+build/pkg-builds
+build/system-root
+build/tool-builds
+build/tools
+**/*.xbstrap
+**/*.link
 .vscode

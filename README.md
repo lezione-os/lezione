@@ -1,3 +1,5 @@
 # lezione
 
-Lezione Operating System
+Code for the first lesson in lezione-os OSDev tutorial.
+
+![boot menu](res/screenshot.png)

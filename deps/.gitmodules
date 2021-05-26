@@ -1,4 +1,0 @@
-[submodule "limine"]
-	shallow = true
-[submodule "echfs"]
-	shallow = true

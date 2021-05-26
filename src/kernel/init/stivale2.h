@@ -4,7 +4,6 @@
 //! https://github.com/stivale/stivale/blob/master/STIVALE2.md
 // This header file is copied from
 // https://github.com/limine-bootloader/limine-barebones
-// The file is public domain (limine-barebones repo uses CC0-1.0 license)
 
 #ifndef __STIVALE__STIVALE2_H__
 #define __STIVALE__STIVALE2_H__

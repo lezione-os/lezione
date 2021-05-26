@@ -6,4 +6,4 @@ IndentWidth: 4
 UseTab: ForIndentation
 PointerAlignment: Right
 BreakBeforeBraces: Attach
-ColumnLimit: 120
+ColumnLimit: 100

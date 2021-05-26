@@ -92,11 +92,12 @@ static int fmt_puti(int64_t val, char *buf, int size, uint8_t base) {
 //! @param base Base, in which integer should be printed
 //! @param width Minimal width (integer representation is left-padded with
 //! zeroes if not long enough)
-#define UINT_FORMAT_CASE(ch, va_type, base, padding)                                                                   \
-	case ch: {                                                                                                         \
-		uint64_t val = (uint64_t)va_arg(args, va_type);                                                                \
-		bytes_written += fmt_putui(val, buf + bytes_written, bytes_max - bytes_written, base, padding);                \
-		break;                                                                                                         \
+#define UINT_FORMAT_CASE(ch, va_type, base, padding)                                               \
+	case ch: {                                                                                     \
+		uint64_t val = (uint64_t)va_arg(args, va_type);                                            \
+		bytes_written +=                                                                           \
+		    fmt_putui(val, buf + bytes_written, bytes_max - bytes_written, base, padding);         \
+		break;                                                                                     \
 	}
 
 int vsnprintf(char *buf, size_t size, const char *format, va_list args) {
