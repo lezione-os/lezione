@@ -1,6 +1,6 @@
 # lezione
 
-Code for the first lesson in lezione-os OSDev tutorial.
+Code for the first lesson in lezione-os OSDev tutorial series.
 
 # Building
 
