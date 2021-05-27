@@ -88,10 +88,10 @@ ASFLAGS := -f elf64
 DESTDIR = .
 
 # Release kernel binary output path
-RELEASE_PATH = $(DESTDIR)/lezione-kernel-release.elf
+RELEASE_PATH = $(DESTDIR)/lezione-kernel.elf
 
 # Debug kernel binary output path
-DEBUG_PATH = $(DESTDIR)/lezione-kernel-debug.elf
+DEBUG_PATH = $(DESTDIR)/lezione-kernel.elf
 
 ### Source files and object lists ###
 

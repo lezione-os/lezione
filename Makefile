@@ -1,24 +1,31 @@
 # List of defined commands
-.PHONY: build clean kernel-clean run
-
-# Path to image
-IMAGE="lezione.hdd"
+# build rule is not to be used by the user, however it is included in this list to make makefile
+# evaluate it
+.PHONY: build-debug build-release clean kernel-clean run-release
 
 # Rule for xbstrap init
 build/bootstrap.link:
 	mkdir -p build
 	cd build && xbstrap init .
 
+# Build image with release kernel
+lezione-release.hdd: KERNEL_PKG = "release-kernel"
+lezione-release.hdd: IMAGE = "lezione-release.hdd"
+lezione-release.hdd: image
+
+# Build image with debug kernel
+lezione-debug.hdd: KERNEL_PKG = "debug-kernel"
+lezione-debug.hdd: IMAGE = "lezione-debug.hdd"
+lezione-debug.hdd: image
+
 # Generic image build rule
-build: build/bootstrap.link
+image: build/bootstrap.link
 # Install echfs utils
 	cd build && xbstrap install-tool echfs
 # Reinstall system files
 	cd build && xbstrap install system-files --rebuild
-# Reinstall release kernel
-	cd build && xbstrap install release-kernel --rebuild
-# Reinstall debug kernel
-	cd build && xbstrap install debug-kernel --rebuild
+# Reinstall kernel
+	cd build && xbstrap install $(KERNEL_PKG) --rebuild
 # Reinstall limine stage 3
 	cd build && xbstrap install limine-stage3 --rebuild
 # Delete existing image
@@ -57,12 +64,38 @@ kernel-clean:
 	make -C kernel clean
 
 # Run release image rule
-# Runs OS in qemu with kvm enabled
-run: build
+# Runs OS in QEMU with kvm enabled
+run-release: lezione-release.hdd
 # Run QEMU
-# -hda $(IMAGE) - Attach harddrive with our release image
+# -hda lezione-release.hdd - Attach hard drive with our image
 # -cpu host --accel kvm --accel hax --accel tcg - Use hardware virtualization if available
 # If no hardware acceleration is present, fallback to tcg with --accel tcg
 # -debugcon stdio - Add debug connection, so that we can print logs to e9 port from the kernel
 # and see them in the terminal
-	qemu-system-x86_64 -hda $(IMAGE) --accel kvm --accel hax --accel tcg -debugcon stdio
+# -no-shutdown -no-reboot - Halt on fatal errrors
+	qemu-system-x86_64 \
+	-hda lezione-release.hdd \
+	--accel kvm --accel hax --accel tcg \
+	-debugcon stdio \
+	-no-shutdown -no-reboot
+
+# Run debug image rule
+run-debug: lezione-debug.hdd
+# Run QEMU
+# -hda lezione-debug.hdd - Attach harddrive with our image
+# -cpu host --accel kvm --accel hax --accel tcg - Use hardware virtualization if available
+# If no hardware acceleration is present, fallback to tcg with --accel tcg
+# -debugcon stdio - Add debug connection, so that we can print logs to e9 port from the kernel
+# and see them in the terminal
+# -S -s - attach and wait for the debugger
+# -no-shutdown -no-reboot - Halt on fatal errrors
+	qemu-system-x86_64 \
+	-hda lezione-debug.hdd \
+	--accel kvm --accel hax --accel tcg \
+	-debugcon stdio \
+	-S -s \
+	-no-shutdown -no-reboot \
+
+# Attach GDB to running session
+gdb-attach:
+	gdb -x gdb-startup
